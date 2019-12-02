@@ -1,7 +1,9 @@
 <!-- File: /app/View/Posts/index.ctp -->
 
 <h1>Blog posts</h1>
-<p><?php echo $this->Html->link('Add Post', array('action' => 'add')); ?></p>
+<p><?php echo $this->Html->link(
+    'Add Post',
+    array('action' => 'add')); ?></p>
 <table>
     <tr>
         <th>Id</th>
@@ -38,7 +40,7 @@
             ?>
         </td>
         <td>
-            <?php echo $post['Post']['created']; ?>
+            <?php echo $post['Post']['modified']; ?>
         </td>
     </tr>
     <?php endforeach; ?>

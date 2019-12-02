@@ -1,6 +1,9 @@
 <?php
+App::uses('AppController', 'Controller');
+
 class PostsController extends AppController {
     public $helpers = array('Html', 'Form');
+    public $uses = array('Post', 'Category');
 
     public function index() {
         $this->set('posts', $this->Post->find('all'));
@@ -19,15 +22,17 @@ class PostsController extends AppController {
     }
 
     public function add() {
+        $this->set('categories',$this->Category->find('list',
+            array('fields'=>array('id','category'))));
+
         if ($this->request->is('post')) {
-            //Added this line
             $this->request->data['Post']['user_id'] = $this->Auth->user('id');
             if ($this->Post->save($this->request->data)) {
                 $this->Flash->success(__('Your post has been saved.'));
                 return $this->redirect(array('action' => 'index'));
             }
-            }
             $this->Flash->error(__('Unable to add your post.'));
+            }
         }
 
     public function edit($id = null) {
