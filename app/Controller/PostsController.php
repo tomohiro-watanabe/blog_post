@@ -3,7 +3,7 @@ App::uses('AppController', 'Controller');
 
 class PostsController extends AppController {
     public $helpers = array('Html', 'Form');
-    public $uses = array('Post', 'Category');
+    public $uses = array('Post', 'Category', 'Tag', 'PostsTag');
 
     public function index() {
         $this->set('posts', $this->Post->find('all'));
@@ -22,17 +22,22 @@ class PostsController extends AppController {
     }
 
     public function add() {
-        $this->set('categories',$this->Category->find('list',
-            array('fields'=>array('id','category'))));
 
         if ($this->request->is('post')) {
             $this->request->data['Post']['user_id'] = $this->Auth->user('id');
-            if ($this->Post->save($this->request->data)) {
+            if ($this->Post->saveAssociated($this->request->data)) {
                 $this->Flash->success(__('Your post has been saved.'));
                 return $this->redirect(array('action' => 'index'));
             }
             $this->Flash->error(__('Unable to add your post.'));
             }
+
+            $this->set('categories',$this->Category->find('list',
+            array('fields'=>array('id','category'))));
+
+            $this->set('tags',$this->Tag->find('list',
+            array('fields'=>array('id','tag'))));
+            
         }
 
     public function edit($id = null) {
