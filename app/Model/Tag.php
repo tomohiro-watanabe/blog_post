@@ -12,7 +12,8 @@ class Tag extends AppModel {
 		'className' => 'Post',
 		'joinTable' => 'posts_tags',
 		'foreignKey' => 'tag_id',
-		'associationForeignKey' => 'post_id'
+		'associationForeignKey' => 'post_id',
+		'with' => 'PostsTag',
 	)
 	);
 

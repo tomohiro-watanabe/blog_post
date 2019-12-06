@@ -1,13 +1,18 @@
 <!-- File: /app/View/Posts/index.ctp -->
+<?php echo $this->element('searchForm')?>
 
 <h1>Blog posts</h1>
+
 <p><?php echo $this->Html->link(
     'Add Post',
     array('action' => 'add')); ?></p>
+
 <table>
     <tr>
         <th>Id</th>
         <th>Title</th>
+        <th>Category</th>
+        <th>Tag</th>
         <th>Actions</th>
         <th>Created</th>
     </tr>
@@ -24,6 +29,15 @@
                     array('action' => 'view', $post['Post']['id'])
                 );
             ?>
+        </td>
+        <td>
+            <?php echo $post['Category']['category']; ?>
+        </td>
+        <td>
+            <?php foreach ($post['Tag'] as $tag): ?>
+            <?php echo $tag['tag']; ?>
+            <?php endforeach; ?>
+                
         </td>
         <td>
             <?php

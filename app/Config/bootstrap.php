@@ -90,6 +90,9 @@ Cache::config('default', array('engine' => 'File'));
  *
  * ));
  */
+
+CakePlugin::load('Search', 'Upload');
+
 Configure::write('Dispatcher.filters', array(
 	'AssetDispatcher',
 	'CacheDispatcher'

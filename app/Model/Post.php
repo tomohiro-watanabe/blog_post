@@ -2,13 +2,23 @@
 App::uses('AppModel', 'Model');
 
 class Post extends AppModel {
+    public $order = array('Post.id ASC');
+    public $name = 'Post';
+    public $actsAs = array('Search.Searchable','Containable');
+    public $filterArgs = array(   
+                array('name' => 'title', 'type' => 'like', 'field' => 'Post.title'),  
+                array('name' => 'category', 'type' => 'like', 'field' => 'Category.id'), 
+                array('name' => 'tag_id', 'type' => 'like', 'field' => 'PostsTag.tag_id')
+    );
+          
 
     public $hasAndBelongsToMany = array(
         'Tag' => array(
             'className' => 'Tag',
             'joinTable' => 'posts_tags',
             'foreignKey' => 'post_id',
-            'associationForeignKey' => 'tag_id'
+            'associationForeignKey' => 'tag_id',
+            'with' => 'PostsTag',
         )
         );
     

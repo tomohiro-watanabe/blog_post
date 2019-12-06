@@ -2,11 +2,28 @@
 App::uses('AppController', 'Controller');
 
 class PostsController extends AppController {
-    public $helpers = array('Html', 'Form');
+    public $name = 'Posts';
     public $uses = array('Post', 'Category', 'Tag', 'PostsTag');
+    public $components = array('Paginator','Search.Prg');
+    public $helpers = array('Html', 'Form');
+    // 検索対象のフィールド設定  
+    public $presetVars = true;
 
     public function index() {
-        $this->set('posts', $this->Post->find('all'));
+        // debug($this->Post->find('all'));
+        $this->Prg->commonProcess();
+        $conditions = $this->Post->parseCriteria($this->passedArgs);
+        $this->set('posts', $this->Post->find('all', 
+            array('conditions' => $conditions)
+        )
+    );
+        $this->Post->recursive = 0;
+
+        $categoryRadio = $this->Post->Category->find('list', array('fields' => array('id', 'category')));
+        $this->set('categoryRadio', $categoryRadio);
+
+        $tagRadio = $this->Post->Tag->find('list', array('fields' => array('id', 'tag')));
+        $this->set('tagRadio', $tagRadio);
     }
 
     public function view($id = null) {
@@ -22,7 +39,7 @@ class PostsController extends AppController {
     }
 
     public function add() {
-
+        // debug($this->Post->find('all'));
         if ($this->request->is('post')) {
             $this->request->data['Post']['user_id'] = $this->Auth->user('id');
             if ($this->Post->saveAssociated($this->request->data)) {
